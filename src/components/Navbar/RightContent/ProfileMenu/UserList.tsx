@@ -1,18 +1,20 @@
+import { communityState } from "@/atoms/communitiesAtom";
 import { auth } from "@/firebase/clienApp";
 import { Flex, Icon, MenuDivider, MenuItem } from "@chakra-ui/react";
 import { signOut } from "firebase/auth";
 import React from "react";
 import { CgProfile } from "react-icons/cg";
 import { MdOutlineLogin } from "react-icons/md";
+import { useResetRecoilState } from "recoil";
 
 type UserListProps = {};
 
 const UserList: React.FC<UserListProps> = () => {
-  //   const resetCommunityState = useResetRecoilState(communityState);
+  const resetCommunityState = useResetRecoilState(communityState);
 
   const logout = async () => {
     await signOut(auth);
-    // resetCommunityState();
+    resetCommunityState();
   };
 
   return (
