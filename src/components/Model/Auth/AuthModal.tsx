@@ -1,4 +1,3 @@
-import { authModalState } from "@/atoms/authModalAtom";
 import { auth } from "@/firebase/clienApp";
 import {
   Flex,
@@ -9,6 +8,7 @@ import {
 import React, { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState } from "recoil";
+import { authModalState } from "../../../atoms/authModalAtom";
 import ModalWrapper from "../ModalWrapper";
 import AuthInputs from "./AuthInputs";
 import OAuthButtons from "./OAuthButtons";
