@@ -22,6 +22,7 @@ import { useSetRecoilState } from "recoil";
 
 import { communityState } from "@/atoms/communitiesAtom";
 import { firestore } from "@/firebase/clienApp";
+import useDirectory from "@/hooks/userDirectory";
 import ModalWrapper from "../ModalWrapper";
 
 type CreateCommunityModalProps = {
@@ -42,6 +43,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
   const [communityType, setCommunityType] = useState("public");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { toggleMenuOpen } = useDirectory();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length > 21) return;
@@ -93,7 +95,8 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
       mySnippets: [],
     }));
     handleClose();
-    router.push(`r/${name}`);
+    toggleMenuOpen();
+    router.push(`/r/${name}`);
     setLoading(false);
   };
 
