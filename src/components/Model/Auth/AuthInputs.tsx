@@ -2,7 +2,7 @@ import { authModalState, ModalView } from "@/atoms/authModalAtom";
 import Login from "@/components/Model/Auth/Login";
 import { Flex } from "@chakra-ui/react";
 import { useRecoilValue } from "recoil";
-import SignUp from "./Signup";
+import SignUp from "./SignUp";
 
 type AuthInputsProps = {
   toggleView: (view: ModalView) => void;
