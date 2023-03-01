@@ -1,4 +1,4 @@
-import { authModalState } from "@/atoms/AuthModalAtom";
+import { authModalState } from "@/atoms/authModalAtom";
 import {
   Community,
   CommunitySnippet,
@@ -174,12 +174,12 @@ const useCommunityData = (ssrCommunityData?: boolean) => {
 
   useEffect(() => {
     // if (ssrCommunityData) return;
-    const { community } = router.query;
-    if (community) {
+    const { communityId } = router.query;
+    if (communityId) {
       const communityData = communityStateValue.currentCommunity;
 
       if (!communityData.id) {
-        getCommunityData(community as string);
+        getCommunityData(communityId as string);
         return;
       }
       // console.log("this is happening", communityStateValue);

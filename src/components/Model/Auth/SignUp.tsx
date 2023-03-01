@@ -1,4 +1,4 @@
-import { ModalView } from "@/atoms/AuthModalAtom";
+import { ModalView } from "@/atoms/authModalAtom";
 import InputItem from "@/components/Layout/InputItems";
 import { auth } from "@/firebase/clienApp";
 import { FIREBASE_ERRORS } from "@/firebase/errors";

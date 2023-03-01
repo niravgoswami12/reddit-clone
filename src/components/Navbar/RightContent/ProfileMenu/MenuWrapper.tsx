@@ -13,7 +13,7 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState } from "recoil";
 
-import { authModalState } from "@/atoms/AuthModalAtom";
+import { authModalState } from "@/atoms/authModalAtom";
 import { auth } from "@/firebase/clienApp";
 import { FaRedditSquare } from "react-icons/fa";
 import { IoSparkles } from "react-icons/io5";

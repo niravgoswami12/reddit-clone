@@ -1,4 +1,4 @@
-import { authModalState } from "@/atoms/AuthModalAtom";
+import { authModalState } from "@/atoms/authModalAtom";
 import { auth } from "@/firebase/clienApp";
 import {
   Flex,
@@ -12,7 +12,7 @@ import { useRecoilState } from "recoil";
 import ModalWrapper from "../ModalWrapper";
 import AuthInputs from "./AuthInputs";
 import OAuthButtons from "./OAuthButtons";
-import ResetPassword from "./Resetpassword";
+import ResetPassword from "./ResetPassword";
 
 type AuthModalProps = {};
 

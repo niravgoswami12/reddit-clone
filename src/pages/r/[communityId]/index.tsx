@@ -1,35 +1,82 @@
-import { Community } from "@/atoms/communitiesAtom";
-import CommunityNotFound from "@/components/Community/CommunityNotFound";
-import Header from "@/components/Community/Header";
-import PageContent from "@/components/Layout/PageContent";
-import { firestore } from "@/firebase/clienApp";
+import Posts from "@/components/Post/Post";
+import { auth, firestore } from "@/firebase/clienApp";
 import { doc, getDoc } from "firebase/firestore";
-import { GetServerSidePropsContext } from "next";
+import type { GetServerSidePropsContext, NextPage } from "next";
+import { useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useSetRecoilState } from "recoil";
 import safeJsonStringify from "safe-json-stringify";
-type Props = {
-  commmunityData: Community;
-};
+import { Community, communityState } from "../../../atoms/communitiesAtom";
+import About from "../../../components/Community/About";
+import CommunityNotFound from "../../../components/Community/CommunityNotFound";
+import CreatePostLink from "../../../components/Community/CreatePostLink";
+import Header from "../../../components/Community/Header";
+import PageContentLayout from "../../../components/Layout/PageContent";
 
-const CommunityPage = ({ commmunityData }: Props) => {
-  if (!commmunityData) {
+interface CommunityPageProps {
+  communityData: Community;
+}
+
+const CommunityPage: NextPage<CommunityPageProps> = ({ communityData }) => {
+  const [user, loadingUser] = useAuthState(auth);
+
+  const setCommunityStateValue = useSetRecoilState(communityState);
+
+  // useEffect(() => {
+  //   // First time the user has navigated to this community page during session - add to cache
+  //   const firstSessionVisit =
+  //     !communityStateValue.visitedCommunities[communityData.id!];
+
+  //   if (firstSessionVisit) {
+  //     setCommunityStateValue((prev) => ({
+  //       ...prev,
+  //       visitedCommunities: {
+  //         ...prev.visitedCommunities,
+  //         [communityData.id!]: communityData,
+  //       },
+  //     }));
+  //   }
+  // }, [communityData]);
+
+  useEffect(() => {
+    setCommunityStateValue((prev) => ({
+      ...prev,
+      currentCommunity: communityData,
+    }));
+  }, [communityData]);
+
+  // Community was not found in the database
+  if (!communityData) {
     return <CommunityNotFound />;
   }
+
   return (
     <>
-      <Header communityData={commmunityData}></Header>
-      <PageContent>
+      <Header communityData={communityData} />
+      <PageContentLayout>
+        {/* Left Content */}
         <>
-          <div>LHS</div>
+          <CreatePostLink />
+          <Posts
+            communityData={communityData}
+            userId={user?.uid}
+            loadingUser={loadingUser}
+          />
         </>
+        {/* Right Content */}
         <>
-          <div>RHS</div>
+          <About communityData={communityData} />
         </>
-      </PageContent>
+      </PageContentLayout>
     </>
   );
 };
 
+export default CommunityPage;
+
 export async function getServerSideProps(context: GetServerSidePropsContext) {
+  console.log("GET SERVER SIDE PROPS RUNNING");
+
   try {
     const communityDocRef = doc(
       firestore,
@@ -37,16 +84,17 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       context.query.communityId as string
     );
     const communityDoc = await getDoc(communityDocRef);
-
     return {
       props: {
-        commmunityData: communityDoc.exists()
+        communityData: communityDoc.exists()
           ? JSON.parse(
-              safeJsonStringify({ id: communityDoc.id, ...communityDoc.data() })
+              safeJsonStringify({ id: communityDoc.id, ...communityDoc.data() }) // needed for dates
             )
           : "",
       },
     };
-  } catch (error) {}
+  } catch (error) {
+    // Could create error page here
+    console.log("getServerSideProps error - [community]", error);
+  }
 }
-export default CommunityPage;

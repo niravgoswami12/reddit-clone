@@ -1,4 +1,4 @@
-import { authModalState, ModalView } from "@/atoms/AuthModalAtom";
+import { authModalState, ModalView } from "@/atoms/authModalAtom";
 import { auth } from "@/firebase/clienApp";
 import { Button, Flex, Icon, Input, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
